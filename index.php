@@ -14,10 +14,10 @@ if (isset($_POST["submit"])) {
         if (empty($_POST["query"])) {
             $queryError = "*Query is required";
         } else {
-            $email = $_POST["email"];
-            $name = $_POST["name"];
-            $subject = $_POST["subject"];
-            $query = $_POST["query"];
+            $email = test_input($_POST["email"]);
+            $name = test_input($_POST["name"]);
+            $subject = test_input($_POST["subject"]);
+            $query = test_input($_POST["query"]);
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $emailError = "Invalid email format";
@@ -30,13 +30,21 @@ if (isset($_POST["submit"])) {
                 try {
 
                     mysqli_query($con, $sql);
-                    echo "data is saved";
+                    echo "<script>alert('Submited')</script>";
                 } catch (mysqli_sql_exception) {
                     echo "Error : " . $sql . "<br>" . $con->error;
                 }
             }
         }
     }
+}
+
+function test_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
 }
 
 ?>
